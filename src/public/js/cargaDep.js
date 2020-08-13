@@ -2,10 +2,16 @@
 
  var  inversion=0;
 async function queryDep(){
+
+
+
     var selectDep = document.getElementById('inputGroupSelectDependencia')
     var depQuery =selectDep.options[selectDep.selectedIndex].value
     let dep_text = selectDep.options[selectDep.selectedIndex].text
     document.getElementById('nom_dep').innerHTML=dep_text
+
+    
+    
     fetch('http://localhost:4000/api/dependencias/'+depQuery)
     .then(res=> res.json())
     .then(datos=>{
@@ -87,8 +93,11 @@ async function queryDep(){
         });
         // Cursor
         chart.cursor = new am4charts.XYCursor();
+
+       
     })
     .catch()
+
 }
 
 async function queryDepVig(){
@@ -97,6 +106,7 @@ async function queryDepVig(){
     let depQuery  = selectDep.options[selectDep.selectedIndex].value;
     let selecVig  = document.getElementById('inputGroupSelectVigencia');
     let vigQuery  = selecVig.options[selecVig.selectedIndex].value;
+
     let parametros ={
         "dep": depQuery,
         "vigencia":vigQuery
@@ -121,78 +131,83 @@ async function queryDepVig(){
     }
 
 
-    var chart = AmCharts.makeChart("chartdivComunas", {
-        "type": "serial",
-        "theme": "light",
-        "categoryField": "comuna",
-        "rotate": true,
-        "startDuration": 1,
-        "categoryAxis": {
-          "gridPosition": "bottom",
-          "position": "left"
-        },
-       
-    
-        "trendLines": [],
-        "graphs": [
-         
-          {
-            "balloonText": "total:[[value]]",
-            "fillAlphas": 0.8,
-            "id": "AmGraph-2",
-            "lineAlpha": 0.2,
-            "title": "total",
-            "labelText": "[[value]]",
-            "type": "column",
-            "valueField": "total"
-          }
-        ],
-        "guides": [],
-        "valueAxes": [
-          {
-            "id": "ValueAxis-1",
-            "position": "bottom",
-            
-            "axisAlpha": 0
-          }
-        ],
-        "allLabels": [],
-        "balloon": {},
-        "titles": [
-            {
-                "id": "Title-1",
-                "size": 18,
-                "text": dep_text
-            },
-            {
-                "bold": false,
-                "id": "Title-2",
-                "size": 13,
-                "text": "(cifras en millones de pesos)"
-            }
-    
-    
-    ],
-        "dataProvider": datos
-         ,
-          "export": {
-              "enabled": true
-           }
+      var chart = AmCharts.makeChart("chartdivComunas", {
+          "type": "serial",
+          "theme": "light",
+          "categoryField": "comuna",
+          "rotate": true,
+          "startDuration": 1,
+          "categoryAxis": {
+            "gridPosition": "bottom",
+            "position": "left"
+          },
+        
       
+          "trendLines": [],
+          "graphs": [
+          
+            {
+              "balloonText": "total:[[value]]",
+              "fillAlphas": 0.8,
+              "id": "AmGraph-2",
+              "lineAlpha": 0.2,
+              "title": "total",
+              "labelText": "[[value]]",
+              "type": "column",
+              "valueField": "total"
+            }
+          ],
+          "guides": [],
+          "valueAxes": [
+            {
+              "id": "ValueAxis-1",
+              "position": "bottom",
+              
+              "axisAlpha": 0
+            }
+          ],
+          "allLabels": [],
+          "balloon": {},
+          "titles": [
+              {
+                  "id": "Title-1",
+                  "size": 18,
+                  "text": dep_text
+              },
+              {
+                  "bold": false,
+                  "id": "Title-2",
+                  "size": 13,
+                  "text": "(cifras en millones de pesos)"
+              }
+      
+      
+      ],
+          "dataProvider": datos
+          ,
+            "export": {
+                "enabled": true
+            }
+        
       });
-    mapadep(depQuery,vigQuery);
+
+      
+      mapadep(depQuery,vigQuery);
+
 
     })
     .catch(error => console.error('Error:', error))
 }
 
+
+
 async function mapadep(depQuery, vigQuery){
+
+
  var container = L.DomUtil.get('map');
     if(container != null){
       container._leaflet_id = null;
     }
-
-
     let selectDep = document.getElementById('inputGroupSelectDependencia');
     let dep_text = selectDep.options[selectDep.selectedIndex].text
 
@@ -214,156 +229,1346 @@ async function mapadep(depQuery, vigQuery){
   fetch(geojson_url)
     .then(res => res.json())
     .then(data => {
-    
+
+      if (!depQuery){depQuery= 761; vigQuery=2019; dep_text ="DAP"}
+
       let geojsonlayer = L.geoJson(data, {
         style: style,
         onEachFeature: function (feature, layer) {
            
 
-         switch (parseInt(depQuery)) {
+          switch (parseInt(depQuery)) {
             case 701:
-            switch(parseInt(vigQuery))
-            {
-                case 2019: inversion = feature.properties.inver_vig_2019_701; break;
-                case 2018: inversion = feature.properties.inver_vig_2018_701; break;
-                case 2017: inversion = feature.properties.inver_vig_2017_701; break;
-                case 2016: inversion = feature.properties.inver_vig_2016_701; break;
-                case 2015: inversion = feature.properties.inver_vig_2015_701; break;
-                case 2014: inversion = feature.properties.inver_vig_2014_701; break;
-                case 2013: inversion = feature.properties.inver_vig_2013_701; break;
-                case 2012: inversion = feature.properties.inver_vig_2012_701; break;
-                case 2011: inversion = feature.properties.inver_vig_2011_701; break;
-                case 2010: inversion = feature.properties.inver_vig_2010_701; break;
-                case 2009: inversion = feature.properties.inver_vig_2009_701; break;
-                case 2008: inversion = feature.properties.inver_vig_2008_701; break;
-            }
-            break;
+              switch (parseInt(vigQuery)) {
+                case 2019:inversion = feature.properties.inver_vig_2019_701;break;
+                case 2018:inversion = feature.properties.inver_vig_2018_701;break;
+                case 2017:inversion = feature.properties.inver_vig_2017_701;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_701;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_701;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_701;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_701;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_701;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_701;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_701;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_701;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_701;
+                  break;
+              }
+              break;
             case 702:
-            switch(parseInt(vigQuery))
-            {
-               case 2019: inversion = feature.properties.inver_vig_2019_702; break;
-               case 2018: inversion = feature.properties.inver_vig_2018_702; break;
-               case 2017: inversion = feature.properties.inver_vig_2017_702; break;
-               case 2016: inversion = feature.properties.inver_vig_2016_702; break;
-               case 2015: inversion = feature.properties.inver_vig_2015_702; break;
-               case 2014: inversion = feature.properties.inver_vig_2014_702; break;
-               case 2013: inversion = feature.properties.inver_vig_2013_702; break;
-               case 2012: inversion = feature.properties.inver_vig_2012_702; break;
-               case 2011: inversion = feature.properties.inver_vig_2011_702; break;
-               case 2010: inversion = feature.properties.inver_vig_2010_702; break;
-               case 2009: inversion = feature.properties.inver_vig_2009_702; break;
-               case 2008: inversion = feature.properties.inver_vig_2008_702; break;
-           }
-            break;
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_702;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_702;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_702;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_702;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_702;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_702;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_702;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_702;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_702;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_702;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_702;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_702;
+                  break;
+              }
+              break;
             case 703:
-            switch(parseInt(vigQuery))
-            {
-                case 2019: inversion = feature.properties.inver_vig_2019_703; break;
-                case 2018: inversion = feature.properties.inver_vig_2018_703; break;
-                case 2017: inversion = feature.properties.inver_vig_2017_703; break;
-                case 2016: inversion = feature.properties.inver_vig_2016_703; break;
-                case 2015: inversion = feature.properties.inver_vig_2015_703; break;
-                case 2014: inversion = feature.properties.inver_vig_2014_703; break;
-                case 2013: inversion = feature.properties.inver_vig_2013_703; break;
-                case 2012: inversion = feature.properties.inver_vig_2012_703; break;
-                case 2011: inversion = feature.properties.inver_vig_2011_703; break;
-                case 2010: inversion = feature.properties.inver_vig_2010_703; break;
-                case 2009: inversion = feature.properties.inver_vig_2009_703; break;
-                case 2008: inversion = feature.properties.inver_vig_2008_703; break;
-            }
-            break;
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_703;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_703;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_703;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_703;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_703;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_703;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_703;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_703;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_703;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_703;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_703;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_703;
+                  break;
+              }
+              break;
             case 704:
-            switch(parseInt(vigQuery))
-            {
-                case 2019: inversion = feature.properties.inver_vig_2019_704; break;
-                case 2018: inversion = feature.properties.inver_vig_2018_704; break;
-                case 2017: inversion = feature.properties.inver_vig_2017_704; break;
-                case 2016: inversion = feature.properties.inver_vig_2016_704; break;
-                case 2015: inversion = feature.properties.inver_vig_2015_704; break;
-                case 2014: inversion = feature.properties.inver_vig_2014_704; break;
-                case 2013: inversion = feature.properties.inver_vig_2013_704; break;
-                case 2012: inversion = feature.properties.inver_vig_2012_704; break;
-                case 2011: inversion = feature.properties.inver_vig_2011_704; break;
-                case 2010: inversion = feature.properties.inver_vig_2010_704; break;
-                case 2009: inversion = feature.properties.inver_vig_2009_704; break;
-                case 2008: inversion = feature.properties.inver_vig_2008_704; break;
-            }
-        break;
-        case 705:
-            switch(parseInt(vigQuery))
-            {
-                case 2019: inversion = feature.properties.inver_vig_2019_705; break;
-                case 2018: inversion = feature.properties.inver_vig_2018_705; break;
-                case 2017: inversion = feature.properties.inver_vig_2017_705; break;
-                case 2016: inversion = feature.properties.inver_vig_2016_705; break;
-                case 2015: inversion = feature.properties.inver_vig_2015_705; break;
-                case 2014: inversion = feature.properties.inver_vig_2014_705; break;
-                case 2013: inversion = feature.properties.inver_vig_2013_705; break;
-                case 2012: inversion = feature.properties.inver_vig_2012_705; break;
-                case 2011: inversion = feature.properties.inver_vig_2011_705; break;
-                case 2010: inversion = feature.properties.inver_vig_2010_705; break;
-                case 2009: inversion = feature.properties.inver_vig_2009_705; break;
-                case 2008: inversion = feature.properties.inver_vig_2008_705; break;
-            }
-            break;
-        case 706:
-            switch(parseInt(vigQuery))
-            {
-                case 2019: inversion = feature.properties.inver_vig_2019_706; break;
-                case 2018: inversion = feature.properties.inver_vig_2018_706; break;
-                case 2017: inversion = feature.properties.inver_vig_2017_706; break;
-                case 2016: inversion = feature.properties.inver_vig_2016_706; break;
-                case 2015: inversion = feature.properties.inver_vig_2015_706; break;
-                case 2014: inversion = feature.properties.inver_vig_2014_706; break;
-                case 2013: inversion = feature.properties.inver_vig_2013_706; break;
-                case 2012: inversion = feature.properties.inver_vig_2012_706; break;
-                case 2011: inversion = feature.properties.inver_vig_2011_706; break;
-                case 2010: inversion = feature.properties.inver_vig_2010_706; break;
-                case 2009: inversion = feature.properties.inver_vig_2009_706; break;
-                case 2008: inversion = feature.properties.inver_vig_2008_706; break;
-            }
-            break;
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_704;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_704;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_704;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_704;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_704;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_704;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_704;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_704;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_704;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_704;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_704;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_704;
+                  break;
+              }
+              break;
+            case 705:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_705;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_705;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_705;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_705;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_705;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_705;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_705;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_705;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_705;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_705;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_705;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_705;
+                  break;
+              }
+              break;
+            case 706:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_706;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_706;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_706;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_706;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_706;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_706;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_706;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_706;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_706;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_706;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_706;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_706;
+                  break;
+              }
+              break;
             case 707:
-                switch(parseInt(vigQuery))
-                {
-                    case 2019: inversion = feature.properties.inver_vig_2019_707; break;
-                    case 2018: inversion = feature.properties.inver_vig_2018_707; break;
-                    case 2017: inversion = feature.properties.inver_vig_2017_707; break;
-                    case 2016: inversion = feature.properties.inver_vig_2016_707; break;
-                    case 2015: inversion = feature.properties.inver_vig_2015_707; break;
-                    case 2014: inversion = feature.properties.inver_vig_2014_707; break;
-                    case 2013: inversion = feature.properties.inver_vig_2013_707; break;
-                    case 2012: inversion = feature.properties.inver_vig_2012_707; break;
-                    case 2011: inversion = feature.properties.inver_vig_2011_707; break;
-                    case 2010: inversion = feature.properties.inver_vig_2010_707; break;
-                    case 2009: inversion = feature.properties.inver_vig_2009_707; break;
-                    case 2008: inversion = feature.properties.inver_vig_2008_707; break;
-                }
-                break;
-                case 711:
-                    switch(parseInt(vigQuery))
-                    {
-                        case 2019: inversion = feature.properties.inver_vig_2019_711; break;
-                        case 2018: inversion = feature.properties.inver_vig_2018_711; break;
-                        case 2017: inversion = feature.properties.inver_vig_2017_711; break;
-                        case 2016: inversion = feature.properties.inver_vig_2016_711; break;
-                        case 2015: inversion = feature.properties.inver_vig_2015_711; break;
-                        case 2014: inversion = feature.properties.inver_vig_2014_711; break;
-                        case 2013: inversion = feature.properties.inver_vig_2013_711; break;
-                        case 2012: inversion = feature.properties.inver_vig_2012_711; break;
-                        case 2011: inversion = feature.properties.inver_vig_2011_711; break;
-                        case 2010: inversion = feature.properties.inver_vig_2010_711; break;
-                        case 2009: inversion = feature.properties.inver_vig_2009_711; break;
-                        case 2008: inversion = feature.properties.inver_vig_2008_711; break;
-                    }
-                    break;
-                  
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_707;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_707;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_707;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_707;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_707;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_707;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_707;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_707;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_707;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_707;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_707;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_707;
+                  break;
+              }
+              break;
+            case 711:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_711;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_711;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_711;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_711;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_711;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_711;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_711;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_711;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_711;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_711;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_711;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_711;
+                  break;
+              }
+              break;
+            case 712:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_712;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_712;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_712;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_712;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_712;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_712;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_712;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_712;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_712;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_712;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_712;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_712;
+                  break;
+              }
+              break;
+            case 713:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_713;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_713;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_713;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_713;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_713;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_713;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_713;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_713;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_713;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_713;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_713;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_713;
+                  break;
+              }
+              break;
+            case 721:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_721;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_721;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_721;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_721;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_721;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_721;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_721;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_721;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_721;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_721;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_721;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_721;
+                  break;
+              }
+              break;
+            case 722:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_722;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_722;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_722;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_722;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_722;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_722;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_722;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_722;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_722;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_722;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_722;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_722;
+                  break;
+              }
+              break;
+            case 723:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_723;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_723;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_723;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_723;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_723;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_723;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_723;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_723;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_723;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_723;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_723;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_723;
+                  break;
+              }
+              break;
+            case 724:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_724;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_724;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_724;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_724;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_724;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_724;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_724;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_724;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_724;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_724;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_724;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_724;
+                  break;
+              }
+              break;
+            case 732:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_732;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_732;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_732;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_732;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_732;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_732;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_732;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_732;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_732;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_732;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_732;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_732;
+                  break;
+              }
+              break;
+            case 733:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_733;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_733;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_733;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_733;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_733;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_733;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_733;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_733;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_733;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_733;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_733;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_733;
+                  break;
+              }
+              break;
 
-    }
+            case 741:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_741;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_741;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_741;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_741;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_741;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_741;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_741;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_741;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_741;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_741;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_741;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_741;
+                  break;
+              }
+              break;
+            case 742:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_742;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_742;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_742;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_742;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_742;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_742;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_742;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_742;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_742;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_742;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_742;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_742;
+                  break;
+              }
+              break;
+            case 743:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_743;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_743;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_743;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_743;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_743;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_743;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_743;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_743;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_743;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_743;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_743;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_743;
+                  break;
+              }
+              break;
+            case 751:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_751;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_751;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_751;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_751;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_751;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_751;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_751;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_751;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_751;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_751;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_751;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_751;
+                  break;
+              }
+              break;
+            case 761:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_761;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_761;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_761;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_761;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_761;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_761;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_761;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_761;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_761;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_761;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_761;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_761;
+                  break;
+              }
+              break;
+            case 762:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_762;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_762;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_762;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_762;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_762;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_762;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_762;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_762;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_762;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_762;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_762;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_762;
+                  break;
+              }
+              break;
 
-    
+            case 902:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_902;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_902;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_902;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_902;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_902;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_902;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_902;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_902;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_902;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_902;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_902;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_902;
+                  break;
+              }
+              break;
+
+            case 903:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_903;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_903;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_903;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_903;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_903;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_903;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_903;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_903;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_903;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_903;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_903;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_903;
+                  break;
+              }
+              break;
+            case 905:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_905;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_905;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_905;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_905;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_905;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_905;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_905;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_905;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_905;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_905;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_905;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_905;
+                  break;
+              }
+              break;
+            case 906:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_906;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_906;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_906;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_906;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_906;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_906;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_906;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_906;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_906;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_906;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_906;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_906;
+                  break;
+              }
+              break;
+            case 907:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_907;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_907;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_907;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_907;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_907;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_907;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_907;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_907;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_907;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_907;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_907;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_907;
+                  break;
+              }
+              break;
+
+            case 911:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_911;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_911;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_911;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_911;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_911;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_911;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_911;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_911;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_911;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_911;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_911;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_911;
+                  break;
+              }
+              break;
+            case 912:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_912;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_912;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_912;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_912;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_912;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_912;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_912;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_912;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_912;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_912;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_912;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_912;
+                  break;
+              }
+              break;
+
+            case 914:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_914;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_914;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_914;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_914;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_914;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_914;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_914;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_914;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_914;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_914;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_914;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_914;
+                  break;
+              }
+              break;
 
 
+            case 915:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_915;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_915;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_915;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_915;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_915;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_915;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_915;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_915;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_915;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_915;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_915;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_915;
+                  break;
+              }
+              break;
+
+
+            case 917:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_917;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_917;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_917;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_917;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_917;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_917;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_917;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_917;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_917;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_917;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_917;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_917;
+                  break;
+              }
+              break;
+
+            case 918:
+              switch (parseInt(vigQuery)) {
+                case 2019:
+                  inversion = feature.properties.inver_vig_2019_918;
+                  break;
+                case 2018:
+                  inversion = feature.properties.inver_vig_2018_918;
+                  break;
+                case 2017:
+                  inversion = feature.properties.inver_vig_2017_918;
+                  break;
+                case 2016:
+                  inversion = feature.properties.inver_vig_2016_918;
+                  break;
+                case 2015:
+                  inversion = feature.properties.inver_vig_2015_918;
+                  break;
+                case 2014:
+                  inversion = feature.properties.inver_vig_2014_918;
+                  break;
+                case 2013:
+                  inversion = feature.properties.inver_vig_2013_918;
+                  break;
+                case 2012:
+                  inversion = feature.properties.inver_vig_2012_918;
+                  break;
+                case 2011:
+                  inversion = feature.properties.inver_vig_2011_918;
+                  break;
+                case 2010:
+                  inversion = feature.properties.inver_vig_2010_918;
+                  break;
+                case 2009:
+                  inversion = feature.properties.inver_vig_2009_918;
+                  break;
+                case 2008:
+                  inversion = feature.properties.inver_vig_2008_918;
+                  break;
+              }
+              break;
+
+
+
+
+          }
+ 
           let popupContent2 = `                       
              <div class="card" style="width: 18rem;">
                  <!-aquí podemos colocar una imagen-->     
@@ -440,6 +1645,10 @@ async function mapadep(depQuery, vigQuery){
       }
       L.control.watermark({position: 'bottomleft'}).addTo(map);
     })
+
+
+
+
 }
 
 
@@ -463,145 +1672,1341 @@ function getColor(d) {
     let vigQuery  = selecVig.options[selecVig.selectedIndex].value;
 
     switch (parseInt(depQuery)) {
-        case 701:
-        switch(parseInt(vigQuery))
-        {
-            case 2019: inversion = feature.properties.inver_vig_2019_701; break;
-            case 2018: inversion = feature.properties.inver_vig_2018_701; break;
-            case 2017: inversion = feature.properties.inver_vig_2017_701; break;
-            case 2016: inversion = feature.properties.inver_vig_2016_701; break;
-            case 2015: inversion = feature.properties.inver_vig_2015_701; break;
-            case 2014: inversion = feature.properties.inver_vig_2014_701; break;
-            case 2013: inversion = feature.properties.inver_vig_2013_701; break;
-            case 2012: inversion = feature.properties.inver_vig_2012_701; break;
-            case 2011: inversion = feature.properties.inver_vig_2011_701; break;
-            case 2010: inversion = feature.properties.inver_vig_2010_701; break;
-            case 2009: inversion = feature.properties.inver_vig_2009_701; break;
-            case 2008: inversion = feature.properties.inver_vig_2008_701; break;
-        }
-        break;
-        case 702:
-        switch(parseInt(vigQuery))
-        {
-           case 2019: inversion = feature.properties.inver_vig_2019_702; break;
-           case 2018: inversion = feature.properties.inver_vig_2018_702; break;
-           case 2017: inversion = feature.properties.inver_vig_2017_702; break;
-           case 2016: inversion = feature.properties.inver_vig_2016_702; break;
-           case 2015: inversion = feature.properties.inver_vig_2015_702; break;
-           case 2014: inversion = feature.properties.inver_vig_2014_702; break;
-           case 2013: inversion = feature.properties.inver_vig_2013_702; break;
-           case 2012: inversion = feature.properties.inver_vig_2012_702; break;
-           case 2011: inversion = feature.properties.inver_vig_2011_702; break;
-           case 2010: inversion = feature.properties.inver_vig_2010_702; break;
-           case 2009: inversion = feature.properties.inver_vig_2009_702; break;
-           case 2008: inversion = feature.properties.inver_vig_2008_702; break;
-       }
-        break;
-        case 703:
-        switch(parseInt(vigQuery))
-        {
-            case 2019: inversion = feature.properties.inver_vig_2019_703; break;
-            case 2018: inversion = feature.properties.inver_vig_2018_703; break;
-            case 2017: inversion = feature.properties.inver_vig_2017_703; break;
-            case 2016: inversion = feature.properties.inver_vig_2016_703; break;
-            case 2015: inversion = feature.properties.inver_vig_2015_703; break;
-            case 2014: inversion = feature.properties.inver_vig_2014_703; break;
-            case 2013: inversion = feature.properties.inver_vig_2013_703; break;
-            case 2012: inversion = feature.properties.inver_vig_2012_703; break;
-            case 2011: inversion = feature.properties.inver_vig_2011_703; break;
-            case 2010: inversion = feature.properties.inver_vig_2010_703; break;
-            case 2009: inversion = feature.properties.inver_vig_2009_703; break;
-            case 2008: inversion = feature.properties.inver_vig_2008_703; break;
-        }
-        break;
-        case 704:
-        switch(parseInt(vigQuery))
-        {
-            case 2019: inversion = feature.properties.inver_vig_2019_704; break;
-            case 2018: inversion = feature.properties.inver_vig_2018_704; break;
-            case 2017: inversion = feature.properties.inver_vig_2017_704; break;
-            case 2016: inversion = feature.properties.inver_vig_2016_704; break;
-            case 2015: inversion = feature.properties.inver_vig_2015_704; break;
-            case 2014: inversion = feature.properties.inver_vig_2014_704; break;
-            case 2013: inversion = feature.properties.inver_vig_2013_704; break;
-            case 2012: inversion = feature.properties.inver_vig_2012_704; break;
-            case 2011: inversion = feature.properties.inver_vig_2011_704; break;
-            case 2010: inversion = feature.properties.inver_vig_2010_704; break;
-            case 2009: inversion = feature.properties.inver_vig_2009_704; break;
-            case 2008: inversion = feature.properties.inver_vig_2008_704; break;
-        }
-    break;
-    case 705:
-        switch(parseInt(vigQuery))
-        {
-            case 2019: inversion = feature.properties.inver_vig_2019_705; break;
-            case 2018: inversion = feature.properties.inver_vig_2018_705; break;
-            case 2017: inversion = feature.properties.inver_vig_2017_705; break;
-            case 2016: inversion = feature.properties.inver_vig_2016_705; break;
-            case 2015: inversion = feature.properties.inver_vig_2015_705; break;
-            case 2014: inversion = feature.properties.inver_vig_2014_705; break;
-            case 2013: inversion = feature.properties.inver_vig_2013_705; break;
-            case 2012: inversion = feature.properties.inver_vig_2012_705; break;
-            case 2011: inversion = feature.properties.inver_vig_2011_705; break;
-            case 2010: inversion = feature.properties.inver_vig_2010_705; break;
-            case 2009: inversion = feature.properties.inver_vig_2009_705; break;
-            case 2008: inversion = feature.properties.inver_vig_2008_705; break;
-        }
-        break;
-    case 706:
-        switch(parseInt(vigQuery))
-        {
-            case 2019: inversion = feature.properties.inver_vig_2019_706; break;
-            case 2018: inversion = feature.properties.inver_vig_2018_706; break;
-            case 2017: inversion = feature.properties.inver_vig_2017_706; break;
-            case 2016: inversion = feature.properties.inver_vig_2016_706; break;
-            case 2015: inversion = feature.properties.inver_vig_2015_706; break;
-            case 2014: inversion = feature.properties.inver_vig_2014_706; break;
-            case 2013: inversion = feature.properties.inver_vig_2013_706; break;
-            case 2012: inversion = feature.properties.inver_vig_2012_706; break;
-            case 2011: inversion = feature.properties.inver_vig_2011_706; break;
-            case 2010: inversion = feature.properties.inver_vig_2010_706; break;
-            case 2009: inversion = feature.properties.inver_vig_2009_706; break;
-            case 2008: inversion = feature.properties.inver_vig_2008_706; break;
-        }
-        break;
-        case 707:
-            switch(parseInt(vigQuery))
-            {
-                case 2019: inversion = feature.properties.inver_vig_2019_707; break;
-                case 2018: inversion = feature.properties.inver_vig_2018_707; break;
-                case 2017: inversion = feature.properties.inver_vig_2017_707; break;
-                case 2016: inversion = feature.properties.inver_vig_2016_707; break;
-                case 2015: inversion = feature.properties.inver_vig_2015_707; break;
-                case 2014: inversion = feature.properties.inver_vig_2014_707; break;
-                case 2013: inversion = feature.properties.inver_vig_2013_707; break;
-                case 2012: inversion = feature.properties.inver_vig_2012_707; break;
-                case 2011: inversion = feature.properties.inver_vig_2011_707; break;
-                case 2010: inversion = feature.properties.inver_vig_2010_707; break;
-                case 2009: inversion = feature.properties.inver_vig_2009_707; break;
-                case 2008: inversion = feature.properties.inver_vig_2008_707; break;
-            }
+      case 701:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_701;
             break;
-            case 711:
-                switch(parseInt(vigQuery))
-                {
-                    case 2019: inversion = feature.properties.inver_vig_2019_711; break;
-                    case 2018: inversion = feature.properties.inver_vig_2018_711; break;
-                    case 2017: inversion = feature.properties.inver_vig_2017_711; break;
-                    case 2016: inversion = feature.properties.inver_vig_2016_711; break;
-                    case 2015: inversion = feature.properties.inver_vig_2015_711; break;
-                    case 2014: inversion = feature.properties.inver_vig_2014_711; break;
-                    case 2013: inversion = feature.properties.inver_vig_2013_711; break;
-                    case 2012: inversion = feature.properties.inver_vig_2012_711; break;
-                    case 2011: inversion = feature.properties.inver_vig_2011_711; break;
-                    case 2010: inversion = feature.properties.inver_vig_2010_711; break;
-                    case 2009: inversion = feature.properties.inver_vig_2009_711; break;
-                    case 2008: inversion = feature.properties.inver_vig_2008_711; break;
-                }
-                break;
-              
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_701;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_701;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_701;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_701;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_701;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_701;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_701;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_701;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_701;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_701;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_701;
+            break;
+        }
+        break;
+      case 702:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_702;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_702;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_702;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_702;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_702;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_702;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_702;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_702;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_702;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_702;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_702;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_702;
+            break;
+        }
+        break;
+      case 703:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_703;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_703;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_703;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_703;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_703;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_703;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_703;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_703;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_703;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_703;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_703;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_703;
+            break;
+        }
+        break;
+      case 704:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_704;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_704;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_704;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_704;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_704;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_704;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_704;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_704;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_704;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_704;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_704;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_704;
+            break;
+        }
+        break;
+      case 705:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_705;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_705;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_705;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_705;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_705;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_705;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_705;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_705;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_705;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_705;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_705;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_705;
+            break;
+        }
+        break;
+      case 706:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_706;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_706;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_706;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_706;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_706;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_706;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_706;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_706;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_706;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_706;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_706;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_706;
+            break;
+        }
+        break;
+      case 707:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_707;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_707;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_707;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_707;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_707;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_707;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_707;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_707;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_707;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_707;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_707;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_707;
+            break;
+        }
+        break;
+      case 711:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_711;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_711;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_711;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_711;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_711;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_711;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_711;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_711;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_711;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_711;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_711;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_711;
+            break;
+        }
+        break;
+      case 712:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_712;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_712;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_712;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_712;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_712;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_712;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_712;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_712;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_712;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_712;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_712;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_712;
+            break;
+        }
+        break;
+      case 713:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_713;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_713;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_713;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_713;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_713;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_713;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_713;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_713;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_713;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_713;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_713;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_713;
+            break;
+        }
+        break;
+      case 721:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_721;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_721;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_721;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_721;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_721;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_721;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_721;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_721;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_721;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_721;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_721;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_721;
+            break;
+        }
+        break;
+      case 722:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_722;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_722;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_722;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_722;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_722;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_722;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_722;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_722;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_722;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_722;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_722;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_722;
+            break;
+        }
+        break;
+      case 723:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_723;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_723;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_723;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_723;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_723;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_723;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_723;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_723;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_723;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_723;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_723;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_723;
+            break;
+        }
+        break;
+      case 724:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_724;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_724;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_724;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_724;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_724;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_724;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_724;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_724;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_724;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_724;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_724;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_724;
+            break;
+        }
+        break;
+      case 732:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_732;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_732;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_732;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_732;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_732;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_732;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_732;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_732;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_732;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_732;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_732;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_732;
+            break;
+        }
+        break;
+      case 733:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_733;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_733;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_733;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_733;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_733;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_733;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_733;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_733;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_733;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_733;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_733;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_733;
+            break;
+        }
+        break;
 
-}
+      case 741:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_741;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_741;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_741;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_741;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_741;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_741;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_741;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_741;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_741;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_741;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_741;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_741;
+            break;
+        }
+        break;
+      case 742:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_742;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_742;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_742;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_742;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_742;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_742;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_742;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_742;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_742;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_742;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_742;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_742;
+            break;
+        }
+        break;
+      case 743:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_743;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_743;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_743;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_743;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_743;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_743;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_743;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_743;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_743;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_743;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_743;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_743;
+            break;
+        }
+        break;
+      case 751:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_751;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_751;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_751;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_751;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_751;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_751;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_751;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_751;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_751;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_751;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_751;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_751;
+            break;
+        }
+        break;
+      case 761:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_761;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_761;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_761;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_761;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_761;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_761;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_761;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_761;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_761;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_761;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_761;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_761;
+            break;
+        }
+        break;
+      case 762:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_762;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_762;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_762;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_762;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_762;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_762;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_762;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_762;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_762;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_762;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_762;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_762;
+            break;
+        }
+        break;
+
+      case 902:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_902;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_902;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_902;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_902;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_902;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_902;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_902;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_902;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_902;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_902;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_902;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_902;
+            break;
+        }
+        break;
+
+      case 903:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_903;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_903;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_903;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_903;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_903;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_903;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_903;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_903;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_903;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_903;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_903;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_903;
+            break;
+        }
+        break;
+      case 905:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_905;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_905;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_905;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_905;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_905;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_905;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_905;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_905;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_905;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_905;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_905;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_905;
+            break;
+        }
+        break;
+      case 906:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_906;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_906;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_906;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_906;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_906;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_906;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_906;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_906;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_906;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_906;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_906;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_906;
+            break;
+        }
+        break;
+      case 907:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_907;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_907;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_907;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_907;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_907;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_907;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_907;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_907;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_907;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_907;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_907;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_907;
+            break;
+        }
+        break;
+
+      case 911:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_911;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_911;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_911;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_911;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_911;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_911;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_911;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_911;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_911;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_911;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_911;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_911;
+            break;
+        }
+        break;
+      case 912:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_912;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_912;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_912;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_912;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_912;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_912;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_912;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_912;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_912;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_912;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_912;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_912;
+            break;
+        }
+        break;
+
+      case 914:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_914;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_914;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_914;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_914;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_914;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_914;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_914;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_914;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_914;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_914;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_914;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_914;
+            break;
+        }
+        break;
+
+
+      case 915:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_915;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_915;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_915;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_915;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_915;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_915;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_915;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_915;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_915;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_915;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_915;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_915;
+            break;
+        }
+        break;
+
+
+      case 917:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_917;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_917;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_917;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_917;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_917;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_917;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_917;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_917;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_917;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_917;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_917;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_917;
+            break;
+        }
+        break;
+
+      case 918:
+        switch (parseInt(vigQuery)) {
+          case 2019:
+            inversion = feature.properties.inver_vig_2019_918;
+            break;
+          case 2018:
+            inversion = feature.properties.inver_vig_2018_918;
+            break;
+          case 2017:
+            inversion = feature.properties.inver_vig_2017_918;
+            break;
+          case 2016:
+            inversion = feature.properties.inver_vig_2016_918;
+            break;
+          case 2015:
+            inversion = feature.properties.inver_vig_2015_918;
+            break;
+          case 2014:
+            inversion = feature.properties.inver_vig_2014_918;
+            break;
+          case 2013:
+            inversion = feature.properties.inver_vig_2013_918;
+            break;
+          case 2012:
+            inversion = feature.properties.inver_vig_2012_918;
+            break;
+          case 2011:
+            inversion = feature.properties.inver_vig_2011_918;
+            break;
+          case 2010:
+            inversion = feature.properties.inver_vig_2010_918;
+            break;
+          case 2009:
+            inversion = feature.properties.inver_vig_2009_918;
+            break;
+          case 2008:
+            inversion = feature.properties.inver_vig_2008_918;
+            break;
+        }
+        break;
+
+
+
+
+    }
 
     return {
         fillColor: getColor(inversion),
