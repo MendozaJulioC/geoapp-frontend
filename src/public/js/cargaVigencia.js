@@ -253,7 +253,7 @@ const mapaVogencia = async (req, res) => {
 
       legend.onAdd = function (map) {
         var div = L.DomUtil.create('div', 'info legend'),
-          grades = [0, 100000000000, 150000000000, 200000000000, 250000000000, 250000000000, 300000000000, 400000000000],
+          grades = [0, 100000000000, 150000000000, 200000000000, 250000000000, 300000000000, 350000000000, 400000000000],
           labels = [];
         // loop through our density intervals and generate a label with a colored square for each interval
         for (var i = 0; i < grades.length; i++) {

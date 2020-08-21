@@ -1,17 +1,16 @@
+const formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2
+})
 
-
- var  inversion=0;
+var  inversion=0;
 async function queryDep(){
-
-
-
     var selectDep = document.getElementById('inputGroupSelectDependencia')
     var depQuery =selectDep.options[selectDep.selectedIndex].value
     let dep_text = selectDep.options[selectDep.selectedIndex].text
     document.getElementById('nom_dep').innerHTML=dep_text
 
-    
-    
     fetch('http://localhost:4000/api/dependencias/'+depQuery)
     .then(res=> res.json())
     .then(datos=>{
@@ -96,8 +95,7 @@ async function queryDep(){
 
        
     })
-    .catch()
-
+   
 }
 
 async function queryDepVig(){
@@ -106,7 +104,6 @@ async function queryDepVig(){
     let depQuery  = selectDep.options[selectDep.selectedIndex].value;
     let selecVig  = document.getElementById('inputGroupSelectVigencia');
     let vigQuery  = selecVig.options[selecVig.selectedIndex].value;
-
     let parametros ={
         "dep": depQuery,
         "vigencia":vigQuery
@@ -129,9 +126,7 @@ async function queryDepVig(){
             "total":Math.round(parseInt(response.data[i].total)/1000000),
         });
     }
-
-
-      var chart = AmCharts.makeChart("chartdivComunas", {
+    var chart = AmCharts.makeChart("chartdivComunas", {
           "type": "serial",
           "theme": "light",
           "categoryField": "comuna",
@@ -189,21 +184,16 @@ async function queryDepVig(){
                 "enabled": true
             }
         
-      });
-
+      }
       
+      );
       mapadep(depQuery,vigQuery);
-
-
     })
     .catch(error => console.error('Error:', error))
 }
 
 
-
 async function mapadep(depQuery, vigQuery){
-
-
  var container = L.DomUtil.get('map');
     if(container != null){
       container._leaflet_id = null;
@@ -217,8 +207,7 @@ async function mapadep(depQuery, vigQuery){
     center: [6.2982733, -75.5459204],
     // Set the initial zoom level, values 0-18, where 0 is most zoomed-out (required)
     zoom: 12,
-    //maxZoom: 12,
-    //minZoom: 12
+    tileSize: 512,
   });
   // Create a Tile Layer and add it to the map
   var tiles = new L.tileLayer('http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png', {
@@ -235,8 +224,6 @@ async function mapadep(depQuery, vigQuery){
       let geojsonlayer = L.geoJson(data, {
         style: style,
         onEachFeature: function (feature, layer) {
-           
-
           switch (parseInt(depQuery)) {
             case 701:
               switch (parseInt(vigQuery)) {
@@ -1568,7 +1555,6 @@ async function mapadep(depQuery, vigQuery){
 
 
           }
- 
           let popupContent2 = `                       
              <div class="card" style="width: 18rem;">
                  <!-aquí podemos colocar una imagen-->     
@@ -1596,7 +1582,6 @@ async function mapadep(depQuery, vigQuery){
 
       }).addTo(map)
 
-
       map.fitBounds(geojsonlayer.getBounds())
       var info = L.control();
       info.onAdd = function (map) {
@@ -1604,32 +1589,27 @@ async function mapadep(depQuery, vigQuery){
         this.update();
         return this._div;
       };
-
       info.update = function () {
-
         this._div.innerHTML = '<p><b>' + vigQuery +'</b></p>';
       };
-
       info.addTo(map);
       var legend = L.control({
         position: 'bottomright'
-        
       });
-
       legend.onAdd = function (map) {
         var div = L.DomUtil.create('div', 'info legend'),
-          grades = [0, 10000000000, 30000000000, 40000000000, 50000000000, 60000000000, 700000000, 100000000000],
+        grades = [0, 100000000000, 150000000000, 200000000000, 250000000000, 300000000000, 350000000000, 400000000000],
           labels = [];
         // loop through our density intervals and generate a label with a colored square for each interval
         for (var i = 0; i < grades.length; i++) {
+         
           div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            '<i style="background:' + getColor3(grades[i] + 1) + '"></i> ' +
             grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
         }
         return div;
       };
       legend.addTo(map);
-
       L.Control.Watermark = L.Control.extend({
           onAdd: function (map) {
           var img = L.DomUtil.create('img');
@@ -1645,31 +1625,133 @@ async function mapadep(depQuery, vigQuery){
       }
       L.control.watermark({position: 'bottomleft'}).addTo(map);
     })
-
-
-
-
+    tipoInversion()
 }
 
 
-function getColor(d) {
+async function tipoInversion(){
 
-    return d > 100000000000 ? '#005a32' :
-           d > 70000000000  ? '#238b45' :
-           d > 60000000000  ? '#41ab5d' :
-           d > 50000000000  ? '#74c476' :
-           d > 40000000000  ? '#a1d99b' :
-           d > 30000000000  ? '#c7e9c0' :
-           d > 10000000000  ? '#e5f5e0' :
-                            '#f7fcf5' ;
-  }
-  
-  function style(feature) {
-
-    let selectDep = document.getElementById('inputGroupSelectDependencia');
+  let selectDep = document.getElementById('inputGroupSelectDependencia');
+    let dep_text = selectDep.options[selectDep.selectedIndex].text
     let depQuery  = selectDep.options[selectDep.selectedIndex].value;
     let selecVig  = document.getElementById('inputGroupSelectVigencia');
     let vigQuery  = selecVig.options[selecVig.selectedIndex].value;
+    let parametros ={
+        "dep": depQuery,
+        "vigencia":vigQuery
+    }
+
+    fetch('http://localhost:4000/api/dependencias/inversion',{
+      method :'POST',
+      body: JSON.stringify(parametros), // data can be `string` or {object}!
+      headers:{
+          'Content-Type': 'application/json'
+      }
+
+      })
+      .then(res=>res.json())
+      .then(response => {
+        
+          document.getElementById('inverLocalizada').innerHTML= formatter.format(Math.round(response.data[0]._localizada));
+          document.getElementById('inverCiudad').innerHTML= formatter.format(Math.round(response.data[0]._ciudad))
+          document.getElementById('pp').innerHTML= formatter.format(Math.round(response.data[0]._pp))
+          document.getElementById('fortinst').innerHTML= formatter.format(Math.round(response.data[0]._fortalecimiento))
+
+      } 
+    ).catch(error => console.log('Error:', error))
+    proyectosxdependencias(1)
+}
+
+
+async function proyectosxdependencias(bloque){
+  try {
+       
+    let tabla='';let page_num='';
+    let dependencia = parseInt(document.getElementById('inputGroupSelectDependencia').value);
+    let vigencia = parseInt(document.getElementById('inputGroupSelectVigencia').value);
+
+    var parametros={
+        "dep"    :   dependencia,
+        "vigencia"  :   vigencia,
+        "page"      :   bloque
+    }
+  
+    fetch('http://localhost:4000/api/dependencias/proyectos',{
+        method: 'POST',
+        body: JSON.stringify(parametros),
+        headers:{
+            'Content-Type': 'application/json'
+        }
+    }).then(res=> res.json())
+    .catch(error=> console.error('Error', error))
+    .then(response=>{
+        let tam = response.data.length;
+        let pagination = response.pages
+
+        page_num +=` <li class="page-item">
+        <a class="page-link" style="background:#FFDC15; " aria-label="Previous"> <span aria-hidden="true">Pág: `+response.Current+`</span></a></li>`;
+        
+        if(response.Current!=1){
+            page_num +=` <li class="page-item">
+            <a class="page-link"  aria-label="Previous" onclick="updatePages(`+ (response.Current-1)+`)"> <span aria-hidden="true">&laquo;</span></a></li>`;
+        }
+      
+       
+        for (let p=0; p<pagination;p++){
+            page_num +='<li id=" li'+(p+1)+' "class="page-item"><a  class="page-link" style="color: #009FE3"  onclick="updatePages('+ (p+1)+')">'+(p+1)+' <span class="sr-only">(current)</span></a></li>'
+        }
+        
+       
+        if(response.Current!=pagination){
+            page_num +=`  <li><a class="page-link" aria-label="Next" onclick="updatePages(`+ (response.Current+1)+`)"><span aria-hidden="true">&raquo;</span></a></li>`;
+        }
+
+        document.getElementById('page_num').innerHTML= page_num
+        
+        for(let i =0; i<(tam) ;i++   ){
+              tabla +='<tr>';
+                tabla +='<td style="text-align: center; font-size: 10px;">'+(parseInt(response.data[i].cod_dep))+'</td>';
+                tabla +='<td style="text-align:initial;font-size: 10px;">'+response.data[i].nombre_dep+'</td>';
+                tabla +='<td style="text-align:initial;font-size: 10px;">'+response.data[i].cod_bpin+'</td>';
+                tabla +='<td style="text-align:initial;font-size: 10px;">'+response.data[i].nomproy+'</td>';
+                tabla +='<td style="text-align:initial;font-size: 10px;">'+response.data[i].comuna+'</td>';
+                tabla +='<td style="font-size: 10px;">'+formatter.format(parseInt((response.data[i].inversion)))+'</td>'
+                tabla +='<td style="font-size: 10px;">'+response.data[i].espp+'</td>'
+              tabla +='<tr>';
+              document.getElementById('reportxproyect').innerHTML=tabla;
+
+          }  
+    
+   
+
+    })
+
+  } catch (error) {console.log(error)}
+
+}
+
+async function updatePages(p){proyectosxdependencias(p)}
+
+
+
+function getColor3(d) {
+
+  return d > 400000000000  ? '#005a32' :
+  d > 350000000000  ? '#238b45' :
+  d > 300000000000  ? '#41ab5d' :
+  d > 250000000000  ? '#74c476' :
+  d > 200000000000  ? '#a1d99b' :
+  d > 150000000000  ? '#c7e9c0' :
+  d > 100000000000  ? '#e5f5e0' :
+                      '#f7fcf5' ;
+}
+  
+function style(feature) {
+
+  let selectDep = document.getElementById('inputGroupSelectDependencia');
+  let depQuery  = selectDep.options[selectDep.selectedIndex].value;
+  let selecVig  = document.getElementById('inputGroupSelectVigencia');
+  let vigQuery  = selecVig.options[selecVig.selectedIndex].value;
 
     switch (parseInt(depQuery)) {
       case 701:
@@ -3009,30 +3091,30 @@ function getColor(d) {
     }
 
     return {
-        fillColor: getColor(inversion),
+        fillColor: getColor3(inversion),
         weight: 2,
         opacity: 1,
         color: 'white',
         dashArray: '3',
         fillOpacity: 0.7
     };
-  }
+}
   
-  function highlightFeature(e) {
-    var layer = e.target;
-    layer.setStyle({
-        weight: 5,
-        color: '#666',
-        dashArray: '',
-        fillOpacity: 0.7
-    });
+function highlightFeature(e) {
+  var layer = e.target;
+  layer.setStyle({
+    weight: 5,
+    color: '#666',
+    dashArray: '',
+    fillOpacity: 0.7
+  });
   
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
-    }
+  if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+    layer.bringToFront();
   }
+}
   
-  function resetHighlight(e) {
-    var geojson;
-    geojson.resetStyle(e.target);
-  }
+function resetHighlight(e) {
+  var geojson;
+  geojson.resetStyle(e.target);
+}

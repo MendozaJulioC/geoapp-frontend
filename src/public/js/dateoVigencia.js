@@ -310,7 +310,7 @@ async function mapa(vigencia_query){
      var legend = L.control({position: 'bottomright'});
      legend.onAdd = function (map) {
      var div = L.DomUtil.create('div', 'info legend'),
-     grades = [0, 100000000000, 150000000000, 200000000000, 250000000000, 250000000000, 300000000000, 400000000000],
+     grades = [0, 100000000000, 150000000000, 200000000000, 250000000000, 300000000000, 350000000000, 400000000000],
      labels = [];
        // loop through our density intervals and generate a label with a colored square for each interval
        for (var i = 0; i < grades.length; i++) {
@@ -397,8 +397,8 @@ function getColor2(d) {
          d > 300000000000  ? '#41ab5d' :
          d > 250000000000  ? '#74c476' :
          d > 200000000000  ? '#a1d99b' :
-         d > 150000000000   ? '#c7e9c0' :
-         d > 100000000000   ? '#e5f5e0' :
+         d > 150000000000  ? '#c7e9c0' :
+         d > 100000000000  ? '#e5f5e0' :
                              '#f7fcf5' ;
 }
 
