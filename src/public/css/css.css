@@ -190,7 +190,7 @@ tr:nth-child(even){background-color: rgb(203, 211, 212)}
     border-radius: 5px;
 }
 .info h4 {
-    margin: 0 0 5px;
+    margin: 0 0 5px;  
     color: #777;
 }
 
@@ -199,7 +199,7 @@ tr:nth-child(even){background-color: rgb(203, 211, 212)}
   color: #555;
 }
 .legend i {
-  width: 180px;
+  width: 200px;
   height: 12px;
   float: left;
   margin-right: 8px;
