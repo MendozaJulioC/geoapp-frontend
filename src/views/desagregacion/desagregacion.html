@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+  <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+  <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.gammel.js"></script>
+  <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.zune.js"></script>
+  <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.candy.js"></script>
+
+  <title> <%= title %> </title>
+  <%- include ('../partials/head.html') %>
+
+
+
+
+
+  
+</head>
+
+<!--Navigation-->
+
+
+<body>
+  <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 mt-1">
+                <div class="card shadow-lg p-1 mb-3 bg-white rounded">
+                    <div class="card-body">     
+                        <h5 class="text-muted" style="text-align: center;">Secretaría de Educación</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card shadow-lg p-3 mb-3 bg-white rounded">
+                    <div class="card-body">
+                        <p class="text-muted text18" >Avanxce Plan de Desarrollo </p>
+                        <div class="mt-lg-3" id="avance-indicador" style="height: 100px;  width:100%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card shadow-lg p-3 mb-3 bg-white rounded">
+                    <div class="card-body">
+                        <p class="text-muted text18" >
+                          Ejecución Financiera
+                        </p>
+                        <div class="mt-lg-3" id="avance-indicador" style="height: 100px;  width:100%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card shadow-lg p-3 mb-3 bg-white rounded">
+                    <div class="card-body">
+                        <p class="text-muted text18" > Detalle Presupuesto
+                       
+                        </p>
+                        <div class="mt-lg-3" id="avance-indicador" style="height: 100px;  width:100%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card shadow-lg p-3 mb-3 bg-white rounded">
+                    <div class="card-body">
+                        <p class="text-muted text18" > Detalle Presupuesto
+                       
+                        </p>
+                        <div class="mt-lg-3" id="avance-indicador" style="height: 100px;  width:100%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card shadow-lg p-3 mb-3 bg-white rounded">
+                    <div class="card-body">
+                        <p class="text-muted text18" > Detalle Presupuesto
+                       
+                        </p>
+                        <div class="mt-lg-3" id="avance-indicador" style="height: 100px;  width:100%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card shadow-lg p-3 mb-3 bg-white rounded">  
+                    <div class="card-body">
+                        <p class="text-muted text18" > Detalle Presupuesto
+                       
+                        </p>
+                        <div class="mt-lg-3" id="avance-indicador" style="height: 100px;  width:100%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="shadow-lg p-3 bg-white rounded">  
+                    <p class="text-muted" style="text-align: left;"> Proyectos de Iniciativa Institucional</p>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="shadow-lg p-3 bg-white rounded">  
+                    <p class="text-muted" style="text-align: left;"> Proyecto: 160254 - Implementación de escuela abierta para el desarrollo de la ciudadanía</p>
+                 </div>
+             </div>
+             <div class="col-sm-4 ">
+                <div class="card shadow-lg p-1 mt-1 mb-3 bg-white rounded">
+                    <table class="table table-hover table-inverse table-responsive-sm">
+                       
+                            <tbody>
+                                <tr>
+                                    <td scope="row">Línea</td>
+                                    <td>1</td>
+                                    <td>Reactivación del Valle del Software</td>
+                                   
+                                </tr>
+                                <tr>
+                                    <td>Componente</td>
+                                    <td>1.1</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Programa</td>
+                                    <td>1.1.1</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                    </table>
+
+                    <div class="mt-lg-3" id="chart-container" style="height: 250px;  width:100%;"></div>
+
+             </div>
+
+             </div>
+             <div class="col-sm-8 ">
+                <div class="card shadow-lg p-1  mt-1 mb-3 bg-white rounded">
+                    <table class="table table-hover table-inverse table-responsive-sm">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th colspan="6" style="background-color: #B4358B; color: cornsilk;">Sintesis proyecto</th>
+                            </tr>
+                            <tr>
+                                <th>Eficacia</th>
+                                <th>Ejec. Fianciera</th>
+                                <th>Eficiencia (Eficacia / Ejec Fra *100):</th>
+                                <th>Ppto Inicial (mill de $):</th>
+                                <th>Ppto Ajustado (mill de $)</th>
+                                <th>Ejec. Financiera (mill de $):</th>
+                                
+                            </tr>
+                            
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td scope="row"> 100%</td>
+                                    <td>100%</td>
+                                    <td>100%</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="6" style="background-color: #B4358B;color:cornsilk;">Descripción del avance</th>
+                                </tr>
+                                <th>Cod</th>
+                                <th>Producto/Bien/Servicio entregado</th>
+                                <th>Unidad</th>
+                                <th>Cantidad Planeada</th>
+                                <th>Cantidad Ejecutada</th>
+                                <th>Eficacia Producto</th>
+
+                                <tr>
+                                    <td scope="row"> ED57AI%</td>
+                                    <td>Personas q aplican encuesta amb esc 2019 </td>
+                                    <td>Número</td>
+                                    <td>28.372</td>
+                                    <td>27.491</td>
+                                    <td> 97%</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="6">Observación B / S:</th>
+                                   
+                                </tr>
+                                <td colspan="6">El contrato 4600081950 de 2019 terminó el 31 de diciembre de 2019 con un acumulado final de 27.491 encuestas cumplidas
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, porro nobis mollitia id quos voluptas nihil distinctio. Odio impedit labore, eos velit accusantium hic, porro doloremque, tenetur enim voluptatem veniam.
+                                </td>
+                            </tbody>
+                    </table>
+                </div>
+             </div>
+
+
+
+             <div class="col-sm-12">
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                      <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                          Comuna 1- Popular
+                          </button>
+                        </h2>
+                      </div>
+                  
+                      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                            
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label for=""></label>
+                                      <input type="number" min="0" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                                      <small id="helpId" class="text-muted">Inversión Ejecutada</small>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                      <label for=""></label>
+                                      <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                                      <small id="helpId" class="text-muted">Mujer</small>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                      <label for=""></label>
+                                      <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                                      <small id="helpId" class="text-muted">Hombre</small>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                      <label for=""></label>
+                                      <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                                      <small id="helpId" class="text-muted">Intersexual</small>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                      <label for=""></label>
+                                      <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                                      <small id="helpId" class="text-muted">Indefinido</small>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                           
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Comuna 2- Santa Cruz
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Collapsible Group Item #3
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body">
+                          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+             </div>
+        </div>
+    </div>
+</body>
+<%- include ('../partials/scriptsHome.html')%>
+	<!-- amCharts javascript sources -->
+  
+  <script src="/js/htmltoexcel.js"></script>
+
+
+
+</html>
+
+
+<script>
+   const dataSource = {
+  chart: {
+    caption: "Implementación de escuela abierta para el desarrollo de la ciudadanía",
+    lowerlimit: "0",
+    upperlimit: "100",
+    showvalue: "1",
+    numbersuffix: "%",
+    theme: "fusion",
+    showtooltip: "0"
+  },
+  colorrange: {
+    color: [
+      {
+        minvalue: "0",
+        maxvalue: "50",
+        code: "#F2726F"
+      },
+      {
+        minvalue: "50",
+        maxvalue: "75",
+        code: "#FFC533"
+      },
+      {
+        minvalue: "75",
+        maxvalue: "100",
+        code: "#62B58F"
+      }
+    ]
+  },
+  dials: {
+    dial: [
+      {
+        value: "81"
+      }
+    ]
+  }
+};
+
+FusionCharts.ready(function() {
+  var myChart = new FusionCharts({
+    type: "angulargauge",
+    renderAt: "chart-container",
+    width: "100%",
+    height: "100%",
+    dataFormat: "json",
+    dataSource
+  }).render();
+});
+
+
+</script>

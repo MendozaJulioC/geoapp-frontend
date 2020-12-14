@@ -35,6 +35,21 @@ const getProyectos = async (req, res) => {
         console.log(e);
     }
 }
-module.exports = {
-    getDependencia, getProyectos
+
+
+const getDesagregacion =async(req, res)=>{
+    try {
+     
+            res.render('./desagregacion/desagregacion.html', {
+                title: "Desagregacion"
+               
+            })
+      
+    } catch (e) {
+        console.log(e);
+    }
 }
+
+
+module.exports = {
+    getDependencia, getProyectos  ,  getDesagregacion}

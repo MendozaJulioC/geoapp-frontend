@@ -4,16 +4,18 @@ const router = Router();
 
 const { getHome, getCuatrienio, getTotalesComuna, getVigencias,getComunas,
        getContacto, getAlonso, getAnibal, 
-        getFico, getTotalAlonso, getTotalAnibal, getTotalFico
+        getFico, getTotalAlonso, getTotalAnibal, getTotalFico 
     } = require('../controllers/index.controllers');
 
-const {getDependencia, getProyectos}= require('../controllers/taskTools');
+const {getDependencia, getProyectos,    getDesagregacion}= require('../controllers/taskTools');
 // en términos de cutarienio
 router.get('/', getHome);
 router.get('/cuatrienios', [getTotalesComuna, getCuatrienio]);
 router.get('/cuatrienios/alonso', [getTotalAlonso,getAlonso]);
 router.get('/cuatrienios/anibal', [getTotalAnibal, getAnibal]);
 router.get('/cuatrienios/fico', [getTotalFico,getFico]);
+
+router.get('/desagregacion', getDesagregacion)
 
 
 
